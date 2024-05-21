@@ -4,13 +4,13 @@
 
 class Sensor:
 
-    # Initialize default values for attributes 'traffice_light', 'pedestrian', and 'vehicle_status'
+    # Initialize default values for attributes 'traffic_light', 'pedestrian', and 'vehicle_status'
     def __init__(self):
         self.traffic_light = "green"
         self.pedestrian = "no"
         self.vehicle_status = "no"
 
-    # Assigns passed values (designated by user input) to their corresponding attributes, then calls the print_message method
+    # Assign passed values (designated by user input) to their corresponding attributes, then call the print_message method
     def update_status(self, light_colour, ped, vehicle):
         self.traffic_light = light_colour
         self.pedestrian = ped
@@ -19,16 +19,15 @@ class Sensor:
 
 # Print out the value of all three attributes as well as the appropriate action message
 def print_message(sensor):
-    # If there is a vehicle or pedestrian detected, or the light is red send a "STOP" message 
+    # If there is a vehicle or pedestrian detected, or the light is red, print a "STOP" message 
     if sensor.traffic_light == "red" or sensor.pedestrian == "yes" or sensor.vehicle_status == "yes":
         response = "STOP"
-    # If the traffic light is yellow, send a "Caution" message
+    # If the traffic light is yellow, print a "Caution" message
     elif sensor.traffic_light == "yellow":
         response = "Caution"
-    # If the traffic light is yellow, send a "Proceed" message
+    # If the traffic light is yellow, print a "Proceed" message
     elif sensor.traffic_light == "green":
         response = "Proceed"
-    
     print(f"\n{response}\n\nLight = {sensor.traffic_light}, Pedestrian = {sensor.pedestrian}, Vehicle = {sensor.vehicle_status}\n")
 
 
@@ -49,7 +48,7 @@ def main():
             elif user_input == '1':
                 # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
-                # Send specific color change to the update_status method, or call print_message method with "STOP" action message if input is invalid
+                # Send specific color change to the update_status method, or print out the status of all attributes if the input is invalid
                 if detected_change == 'green' or detected_change == 'yellow' or detected_change == 'red':
                     car_sensor.update_status(light_colour=detected_change, ped=car_sensor.pedestrian, vehicle=car_sensor.vehicle_status)
                 else:
@@ -59,7 +58,7 @@ def main():
             elif user_input == '2':
                 # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
-                # Send yes or no pedestrian detected to the update_status method, or call print_message method with "STOP" action message if input is invalid
+                # Send yes or no pedestrian detected to the update_status method, or print out the status of all attributes if the input is invalid
                 if detected_change == 'yes' or detected_change == 'no':
                     car_sensor.update_status(light_colour=car_sensor.traffic_light, ped=detected_change, vehicle=car_sensor.vehicle_status)
                 else:
@@ -69,7 +68,7 @@ def main():
             elif user_input == '3':
                 # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
-                # Send yes or no vehicle detected to the update_status method, or call print_message method with "STOP" action message if input is invalid
+                # Send yes or no vehicle detected to the update_status method, or print out the status of all attributes if the input is invalid
                 if detected_change == 'yes' or detected_change == 'no':
                     car_sensor.update_status(light_colour=car_sensor.traffic_light, ped=car_sensor.pedestrian, vehicle=detected_change)
                 else:
