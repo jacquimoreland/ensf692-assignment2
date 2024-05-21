@@ -1,95 +1,89 @@
 # input_processing.py
 # Jacqui Moreland, ENSF 692 P24
 # A terminal-based program for processing computer vision changes detected by a car.
-# Detailed specifications are provided via the Assignment 2 README file.
-# You must include the code provided below but you may delete the instructional comments.
-# You may add your own additional classes, functions, variables, etc. as long as they do not contradict the requirements (i.e. no global variables, etc.). 
-# You may import any modules from the standard Python library.
-# Remember to include your name and comments.
 
-
-
-# No global variables are permitted
-
-
-# You do not need to provide additional commenting above this class, just the user-defined functions within the class
 class Sensor:
 
-    # Must include a constructor that uses default values
-    # You do not need to provide commenting above the constructor
+    # Initialize default values for attributes 'traffice_light', 'pedestrian', and 'vehicle_status'
     def __init__(self):
         self.traffic_light = "green"
         self.pedestrian = "no"
         self.vehicle_status = "no"
 
-    # Replace these comments with your function commenting
-    def update_status(self, light_colour="green", ped="no", vehicle="no"): # You may decide how to implement the arguments for this function
+    # Assigns passed values (designated by user input) to their corresponding attributes, then calls the print_message method
+    def update_status(self, light_colour, ped, vehicle):
         self.traffic_light = light_colour
         self.pedestrian = ped
         self.vehicle_status = vehicle
+        print_message(self)
 
-        if self.traffic_light == "red" or self.pedestrian == "yes" or self.vehicle_status == "yes":
-            print_message(self, "STOP")
-        elif self.traffic_light == "yellow":
-            print_message(self, "Caution")
-        elif self.traffic_light == "green":
-            print_message(self, "Proceed")
-
-
-# The sensor object should be passed to this function to print the action message and current status
-# Replace these comments with your function commenting
-def print_message(sensor, response):
+# Print out the value of all three attributes as well as the appropriate action message
+def print_message(sensor):
+    # If there is a vehicle or pedestrian detected, or the light is red send a "STOP" message 
+    if sensor.traffic_light == "red" or sensor.pedestrian == "yes" or sensor.vehicle_status == "yes":
+        response = "STOP"
+    # If the traffic light is yellow, send a "Caution" message
+    elif sensor.traffic_light == "yellow":
+        response = "Caution"
+    # If the traffic light is yellow, send a "Proceed" message
+    elif sensor.traffic_light == "green":
+        response = "Proceed"
+    
     print(f"\n{response}\n\nLight = {sensor.traffic_light}, Pedestrian = {sensor.pedestrian}, Vehicle = {sensor.vehicle_status}\n")
 
 
-# Complete the main function below
 def main():
     print("\n***ENSF 692 Car Vision Detector Processing Program***\n")
+    # Create new object of the Sensor class
     car_sensor = Sensor()
 
     while True:
         try:
-            user_input = input("Are there any changes detected in the sensor?\n" + 
+            # Prompt user for input regarding changes to sensor detection
+            user_input = input("Are there any changes detected in the vision input?\n" + 
                             "Select 1 for light, 2 for pedestrian, 3 for vehicle, or 0 to end the program: ")
+            # Stop the loop if the user enters 0
             if user_input == '0':
                 break
+            # User indicated change to traffic light
             elif user_input == '1':
+                # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
-                detected_change = detected_change.lower()
+                # Send specific color change to the update_status method, or call print_message method with "STOP" action message if input is invalid
                 if detected_change == 'green' or detected_change == 'yellow' or detected_change == 'red':
-                    car_sensor.update_status(light_colour=detected_change)
+                    car_sensor.update_status(light_colour=detected_change, ped=car_sensor.pedestrian, vehicle=car_sensor.vehicle_status)
                 else:
-                    raise ValueError("Please enter either 'green', 'yellow', or 'red'")
+                    print("Invalid vision change.")
+                    print_message(car_sensor)
+            # User indicated change to pedestrian detection
             elif user_input == '2':
+                # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
-                detected_change = detected_change.lower()
+                # Send yes or no pedestrian detected to the update_status method, or call print_message method with "STOP" action message if input is invalid
                 if detected_change == 'yes' or detected_change == 'no':
-                    car_sensor.update_status(ped=detected_change)
-                elif detected_change == 'no':
-                    car_sensor.update_status()
+                    car_sensor.update_status(light_colour=car_sensor.traffic_light, ped=detected_change, vehicle=car_sensor.vehicle_status)
                 else:
-                    raise ValueError("Please enter either 'yes' or 'no'")
+                    print("Invalid vision change.")
+                    print_message(car_sensor)
+            # User indicated change to vehicle detection
             elif user_input == '3':
+                # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
-                detected_change = detected_change.lower()
-                if detected_change == 'yes':
-                    car_sensor.update_status(vehicle=detected_change)
-                elif detected_change == 'no':
-                    car_sensor.update_status(vehicle=detected_change)
+                # Send yes or no vehicle detected to the update_status method, or call print_message method with "STOP" action message if input is invalid
+                if detected_change == 'yes' or detected_change == 'no':
+                    car_sensor.update_status(light_colour=car_sensor.traffic_light, ped=car_sensor.pedestrian, vehicle=detected_change)
                 else:
-                    raise ValueError("Please enter either 'yes' or 'no'")
+                    print("Invalid vision change.")
+                    print_message(car_sensor)
+            # Raise ValueError if the initial input is not accepted
             else:
-                raise ValueError("Your input must be either a 1, 2, 3, or 0")
+                raise ValueError("You must select either 1, 2, 3, or 0.")
         
         except ValueError as err:
-            print(f"\nValueError:", err, end="\n\n")
-
-
-
+            print(err, end="\n\n")
 
 
 # Conventional Python code for running main within a larger program
-# No additional code should be included below this
 if __name__ == '__main__':
     main()
 
