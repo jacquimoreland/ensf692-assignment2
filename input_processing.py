@@ -1,33 +1,46 @@
 # input_processing.py
 # Jacqui Moreland, ENSF 692 P24
+
 # A terminal-based program for processing computer vision changes detected by a car.
 
 class Sensor:
 
-    # Initialize default values for attributes 'traffic_light', 'pedestrian', and 'vehicle_status'
     def __init__(self):
+        # Initialize default values for attributes 'traffic_light', 'pedestrian', and 'vehicle_status'
         self.traffic_light = "green"
         self.pedestrian = "no"
         self.vehicle_status = "no"
 
-    # Assign passed values (designated by user input) to their corresponding attributes, then call the print_message method
     def update_status(self, light_colour, ped, vehicle):
+        """ Assign passed values to their corresponding Sensor attributes, then call the print_message function. """
+
         self.traffic_light = light_colour
         self.pedestrian = ped
         self.vehicle_status = vehicle
+        # Call the print message function
         print_message(self)
 
-# Print out the value of all three attributes as well as the appropriate action message
+
 def print_message(sensor):
-    # If there is a vehicle or pedestrian detected, or the light is red, print a "STOP" message 
+    """
+    Uses conditional logic to check the status of the traffic light, pedestrian, and vehicle and output an
+    appropriate action message. 
+
+    Args:
+        sensor: Sensor object
+    """
+
+    # "STOP" condition
     if sensor.traffic_light == "red" or sensor.pedestrian == "yes" or sensor.vehicle_status == "yes":
         response = "STOP"
-    # If the traffic light is yellow, print a "Caution" message
+    # "Caution" condition
     elif sensor.traffic_light == "yellow":
         response = "Caution"
-    # If the traffic light is yellow, print a "Proceed" message
+    # "Proceed" condition
     elif sensor.traffic_light == "green":
         response = "Proceed"
+    
+    # Print to the console the updated status and the action message
     print(f"\n{response}\n\nLight = {sensor.traffic_light}, Pedestrian = {sensor.pedestrian}, Vehicle = {sensor.vehicle_status}\n")
 
 
@@ -49,7 +62,7 @@ def main():
                 # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
                 # Send specific color change to the update_status method, or print out the status of all attributes if the input is invalid
-                if detected_change == 'green' or detected_change == 'yellow' or detected_change == 'red':
+                if detected_change in ['green','yellow','red']:
                     car_sensor.update_status(light_colour=detected_change, ped=car_sensor.pedestrian, vehicle=car_sensor.vehicle_status)
                 else:
                     print("Invalid vision change.")
@@ -59,7 +72,7 @@ def main():
                 # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
                 # Send yes or no pedestrian detected to the update_status method, or print out the status of all attributes if the input is invalid
-                if detected_change == 'yes' or detected_change == 'no':
+                if detected_change in ['yes', 'no']:
                     car_sensor.update_status(light_colour=car_sensor.traffic_light, ped=detected_change, vehicle=car_sensor.vehicle_status)
                 else:
                     print("Invalid vision change.")
@@ -69,7 +82,7 @@ def main():
                 # Prompt user to specify the identified change
                 detected_change = input("What change has been identified?: ")
                 # Send yes or no vehicle detected to the update_status method, or print out the status of all attributes if the input is invalid
-                if detected_change == 'yes' or detected_change == 'no':
+                if detected_change in ['yes', 'no']:
                     car_sensor.update_status(light_colour=car_sensor.traffic_light, ped=car_sensor.pedestrian, vehicle=detected_change)
                 else:
                     print("Invalid vision change.")
